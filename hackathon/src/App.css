@@ -1,0 +1,50 @@
+/* src/App.css */
+
+:root {
+  /* Gamification Color Palette */
+  --color-primary: #3b82f6; 
+  --color-secondary: #facc15; 
+  --color-success: #10b981; 
+  --color-danger: #ef4444; 
+  --color-background-light: #f9fafb;
+  --color-border: #e5e7eb;
+}
+
+/* Keep this, but modify it slightly */
+#root {
+  /* Remove center alignment if your dashboard is large */
+  max-width: 100%; 
+  margin: 0;
+  padding: 0;
+  text-align: left; /* Default to left alignment */
+}
+
+/* Add the new global styles for the body and dashboard container */
+body {
+    background-color: var(--color-background-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+}
+
+.gamification-dashboard {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.gamification-dashboard h1 {
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: 30px;
+}
+
+html, body, #root {
+    /* Ensure all parents fill the viewport width */
+    width: 100%;
+    /* Ensure no unexpected padding/border is added to the width */
+    box-sizing: border-box; 
+}
