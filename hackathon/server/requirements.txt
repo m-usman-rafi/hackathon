@@ -1,0 +1,6 @@
+# server/requirements.txt
+
+Flask
+google-cloud-bigquery
+google-auth
+flask-cors
