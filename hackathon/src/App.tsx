@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+// src/App.tsx (Corrected Version)
+
+import { useState, useEffect } from 'react';
 import UserProfileCard from './components/UserProfileCard';
 import StreakCounter from './components/StreakCounter';
 import { fetchUserProfile } from './api/api';
 import { UserProfileData } from './types/GamificationTypes';
-import './App.css'; // Keep or modify your main CSS import
+import './App.css'; 
 import './components/Gamification.css';
+import Leaderboard from './components/Leaderboard'; // <-- Keep this import
 
 
-const MOCK_USER_ID = 'user-123'; // ID for the logged-in user
+const MOCK_USER_ID = '3574368165637449459';
 
 function App() {
   const [userData, setUserData] = useState<UserProfileData | null>(null);
@@ -25,7 +28,7 @@ function App() {
       }
     };
     loadData();
-  }, []); // Run only once on initial render
+  }, []);
 
   if (isLoading) {
     return (
@@ -40,19 +43,20 @@ function App() {
     return <div>Error loading profile data. Please try again.</div>;
   }
 
+  // 👇 THIS IS THE ONLY RETURN STATEMENT THAT SHOULD REMAIN 👇
   return (
     <div className="gamification-dashboard">
       <h1>Your Reader Status</h1>
       
-      {/* Pass the entire data object to the profile card */}
+      {/* Existing components */}
       <UserProfileCard data={userData} /> 
-      
-      {/* Extract the streak property for the counter */}
       <StreakCounter currentStreak={userData.currentStreak} /> 
       
-      {/* Leaderboard component will go here later */}
+      {/* RENDER THE LEADERBOARD HERE */}
+      <Leaderboard /> 
     </div>
   );
+  // 👆 ALL CODE BELOW THIS POINT WAS REDUNDANT AND HAS BEEN DELETED 👆
 }
 
 export default App;

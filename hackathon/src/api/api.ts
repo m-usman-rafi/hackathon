@@ -1,28 +1,45 @@
 // src/api/api.ts
-import { UserProfileData } from '../types/GamificationTypes';
+
+import { UserProfileData, LeaderboardEntry } from '../types/GamificationTypes';
+
+// 🎯 Set the base URL for your Python Flask server
+const API_BASE_URL = 'http://localhost:5000/api'; 
+const MOCK_USER_ID = '3574368165637449459'; // Still needed for the initial fetch
+
 
 /**
- * **MOCK API FUNCTION**
- * In a real application, this function would use `fetch` or a library like `axios`
- * to make an HTTP request (GET) to your Python back-end (e.g., '/api/v1/profile').
+ * Fetches the user's profile data (including Rank, Streak, and Points) 
+ * from the Python/BigQuery backend.
  */
-export async function fetchUserProfile(userId: string): Promise<UserProfileData> {
-  console.log(`Fetching profile data for user: ${userId}`);
+export async function fetchUserProfile(userId: string = MOCK_USER_ID): Promise<UserProfileData> {
+  console.log(`[API] Fetching real profile data for user: ${userId}`);
+  
+  const response = await fetch(`${API_BASE_URL}/profile/${userId}`);
 
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 500)); 
+  if (!response.ok) {
+    // If the API call fails, throw an error or return a default structure
+    const errorData = await response.json();
+    throw new Error(`Failed to fetch user profile: ${response.status} - ${errorData.error}`);
+  }
 
-  // --- Mock Data that adheres strictly to UserProfileData interface ---
-  const mockData: UserProfileData = {
-    userId: userId,
-    username: 'MagazineMaster',
-    level: 7,
-    currentPoints: 1450,
-    nextLevelPoints: 2000,
-    avatarUrl: 'https://placehold.co/80x80/007bff/white?text=A', // Placeholder image
-    currentStreak: 12,
-    rank: 45
-  };
+  const data: UserProfileData = await response.json();
+  return data;
+}
 
-  return mockData;
+
+/**
+ * Fetches the global leaderboard data from the Python/BigQuery backend.
+ */
+export async function fetchLeaderboardData(): Promise<LeaderboardEntry[]> {
+  console.log('[API] Fetching real global leaderboard data...');
+  
+  const response = await fetch(`${API_BASE_URL}/leaderboard`);
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(`Failed to fetch leaderboard: ${response.status} - ${errorData.error}`);
+  }
+
+  const data: LeaderboardEntry[] = await response.json();
+  return data;
 }
