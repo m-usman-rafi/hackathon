@@ -1,5 +1,71 @@
 /* src/components/Gamification.css (or similar) */
 
+/* Dashboard Header with Search */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+}
+
+/* User Search Component */
+.user-search-container {
+    display: flex;
+    align-items: center;
+}
+
+.user-search-container form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.user-search-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9em;
+    min-width: 200px;
+    transition: border-color 0.2s ease;
+}
+
+.user-search-input:focus {
+    outline: none;
+    border-color: var(--color-primary, #007bff);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.user-search-input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.user-search-button {
+    padding: 8px 16px;
+    background-color: var(--color-primary, #007bff);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.user-search-button:hover:not(:disabled) {
+    background-color: var(--color-primary-dark, #0056b3);
+}
+
+.user-search-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
 .user-profile-card {
     display: flex;
     align-items: center;
@@ -87,12 +153,12 @@
 .streak-counter {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 15px 25px;
     border-radius: 8px;
-    margin: 20px auto 40px auto; /* Centers horizontally */
+    margin: 20px 0 40px 0; /* Left-aligned */
     width: 250px;
-    text-align: center;
+    text-align: left;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -127,6 +193,78 @@
     margin: 0;
     font-size: 0.8em;
     text-transform: uppercase;
+}
+
+/* Streak and Achievements Wrapper */
+.streak-achievements-wrapper {
+    display: flex;
+    align-items: stretch; /* Make all children the same height */
+    gap: 20px;
+    margin: 20px 0 40px 0;
+    flex-wrap: wrap;
+}
+
+/* Achievements Container */
+.achievements-container {
+    display: flex;
+    align-items: stretch; /* Make achievement boxes stretch to match height */
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Achievement Box - matches streak counter height and styling */
+.achievement-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px; /* Reduced padding to give more space for images */
+    border-radius: 8px;
+    background-color: #f5f5f5; /* Light grey background */
+    border: 1px solid #e0e0e0; /* Light grey border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 80px; /* Square box */
+    position: relative; /* For tooltip positioning */
+    /* Height will match streak counter naturally due to align-items: center in wrapper */
+}
+
+/* Achievement Images */
+.achievement-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Achievement Tooltip */
+.achievement-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 0.85em;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+}
+
+.achievement-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #333;
+}
+
+.achievement-box:hover .achievement-tooltip {
+    opacity: 1;
 }
 
 /* -------------------- 3. Leaderboard Styles -------------------- */
@@ -190,6 +328,17 @@
     border: 1px solid var(--color-primary);
     border-radius: 5px;
     margin: 5px 0;
+}
+
+/* Separator between top 10 and current user */
+.leaderboard-separator {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px; /* Align with header */
+    padding: 8px 15px;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 0.9em;
+    border-bottom: 1px dashed #e5e7eb;
 }
 
 /* Column Alignment */

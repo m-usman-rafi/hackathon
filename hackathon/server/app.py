@@ -24,17 +24,36 @@ def get_user_profile(user_id):
     if not data:
         return jsonify({"error": "User not found"}), 404
         
+    # Determine avatar URL based on user level
+    level = data.get("level", 1)
+    if level == 1:
+        avatar_url = "/level_1_avatar.png"
+    elif level == 2:
+        avatar_url = "/level_2_avatar.png"
+    elif level == 3:
+        avatar_url = "/level_3_avatar.png"
+    else:
+        avatar_url = "https://placehold.co/80x80/007bff/white?text=A"  # Fallback placeholder
+        
     # **MAPPING CRITICAL STEP:**
     # Map Python snake_case keys from BigQuery/Service to React's camelCase keys.
+    # Ensure username is always a string to prevent precision loss for large integers
+    username = data.get("username", "Unknown Reader")
+    if username is not None:
+        username = str(username)  # Convert to string to preserve full precision
+    
     response_data = {
-        "userId": user_id,
-        "username": data.get("username", "Unknown Reader"),
-        "level": data.get("level", 1), 
+        "userId": str(user_id),  # Ensure userId is always a string
+        "username": username,
+        "level": level, 
         "currentPoints": data.get("current_points", 0),
         "nextLevelPoints": data.get("next_level_points", 1000), 
-        "avatarUrl": "https://placehold.co/80x80/007bff/white?text=A", # Static placeholder
+        "avatarUrl": avatar_url,
         "currentStreak": data.get("current_streak", 0), # Mapped from current_streak
-        "rank": data.get("rank", 999), 
+        "rank": data.get("rank", 999),
+        "xpCreatedLogin": data.get("XP_CREATED_LOGIN", 0),
+        "xpSubscriptionsMonths": data.get("XP_subscriptions_months", 0),
+        "xpLatest3DaysArticlePageViews": data.get("XP_latest_3_days_article_page_views", 0),
     }
     
     return jsonify(response_data)

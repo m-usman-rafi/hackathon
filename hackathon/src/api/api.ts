@@ -1,6 +1,6 @@
 // src/api/api.ts
 
-import { UserProfileData, LeaderboardEntry } from '../types/GamificationTypes';
+import type { UserProfileData, LeaderboardEntry } from '../types/GamificationTypes';
 
 // 🎯 Set the base URL for your Python Flask server
 const API_BASE_URL = 'http://localhost:5000/api'; 
@@ -14,16 +14,32 @@ const MOCK_USER_ID = '3574368165637449459'; // Still needed for the initial fetc
 export async function fetchUserProfile(userId: string = MOCK_USER_ID): Promise<UserProfileData> {
   console.log(`[API] Fetching real profile data for user: ${userId}`);
   
-  const response = await fetch(`${API_BASE_URL}/profile/${userId}`);
+  try {
+    const response = await fetch(`${API_BASE_URL}/profile/${userId}`);
 
-  if (!response.ok) {
-    // If the API call fails, throw an error or return a default structure
-    const errorData = await response.json();
-    throw new Error(`Failed to fetch user profile: ${response.status} - ${errorData.error}`);
+    if (!response.ok) {
+      // Try to get error message from response
+      let errorMessage = `HTTP ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } catch (e) {
+        // If response is not JSON, use status text
+        errorMessage = response.statusText || errorMessage;
+      }
+      throw new Error(`Failed to fetch user profile: ${response.status} - ${errorMessage}`);
+    }
+
+    const data: UserProfileData = await response.json();
+    return data;
+  } catch (error) {
+    // Handle network errors (server not running, CORS, etc.)
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      throw new Error(`Network error: Unable to connect to server at ${API_BASE_URL}. Make sure the Flask server is running on port 5000.`);
+    }
+    // Re-throw other errors
+    throw error;
   }
-
-  const data: UserProfileData = await response.json();
-  return data;
 }
 
 
