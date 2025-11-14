@@ -3,12 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import LeaderboardRow from './LeaderboardRow';
 import { fetchLeaderboardData } from '../api/api';
-import { LeaderboardEntry } from '../types/GamificationTypes';
+import type { LeaderboardEntry, UserProfileData } from '../types/GamificationTypes';
 
-// This ID should match the one used in App.tsx and api.ts
-const CURRENT_USER_ID = '3574368165637449459'; 
+interface LeaderboardProps {
+  currentUserData: UserProfileData;
+}
 
-const Leaderboard: React.FC = () => {
+const Leaderboard: React.FC<LeaderboardProps> = ({ currentUserData }) => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -34,6 +35,25 @@ const Leaderboard: React.FC = () => {
       return <div className="leaderboard-empty">No leaderboard data available.</div>;
   }
 
+  // Check if current user is in the top 10
+  const currentUserInTop10 = leaderboard.some(entry => entry.userId === currentUserData.userId);
+  
+  // Create current user entry if not in top 10
+  const currentUserEntry: LeaderboardEntry | null = currentUserInTop10 
+    ? null 
+    : {
+        userId: currentUserData.userId,
+        username: currentUserData.username,
+        points: currentUserData.currentPoints,
+        rank: currentUserData.rank
+      };
+
+  // Separate top 10 and current user entry
+  const top10Entries = leaderboard;
+  const displayEntries = currentUserEntry 
+    ? [...top10Entries, currentUserEntry]
+    : top10Entries;
+
   return (
     <div className="leaderboard-container">
       <h2>Global Leaderboard</h2>
@@ -47,13 +67,24 @@ const Leaderboard: React.FC = () => {
       
       {/* Data Rows */}
       <div className="leaderboard-rows-wrapper">
-          {leaderboard.map((entry) => (
-            <LeaderboardRow
-              key={entry.userId}
-              entry={entry}
-              isCurrentUser={entry.userId === CURRENT_USER_ID}
-            />
-          ))}
+          {displayEntries.map((entry, index) => {
+            const isCurrentUser = entry.userId === currentUserData.userId;
+            const isSeparator = currentUserEntry && index === top10Entries.length;
+            
+            return (
+              <React.Fragment key={`entry-${entry.userId}-${index}`}>
+                {isSeparator && (
+                  <div className="leaderboard-separator" key="separator">
+                    <span>...</span>
+                  </div>
+                )}
+                <LeaderboardRow
+                  entry={entry}
+                  isCurrentUser={isCurrentUser}
+                />
+              </React.Fragment>
+            );
+          })}
       </div>
     </div>
   );

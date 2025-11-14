@@ -14,7 +14,7 @@ const StreakCounter: React.FC<StreakCounterProps> = ({ currentStreak }) => {
     <div className={`streak-counter ${isStreaking ? 'active-streak' : 'inactive-streak'}`}>
       <FaFire size={30} color={isStreaking ? '#ff4500' : '#ccc'} />
       <div className="streak-details">
-        <span className="streak-number">**{currentStreak}**</span>
+        <span className="streak-number">{currentStreak}</span>
         <p className="streak-label">Day Streak</p>
       </div>
     </div>

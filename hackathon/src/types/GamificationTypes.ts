@@ -12,6 +12,9 @@ export interface UserProfileData {
   avatarUrl: string;
   currentStreak: number; // Days in a row the user has engaged
   rank: number; // User's current rank on the overall leaderboard
+  xpCreatedLogin: number;
+  xpSubscriptionsMonths: number;
+  xpLatest3DaysArticlePageViews: number;
 }
 
 /**
