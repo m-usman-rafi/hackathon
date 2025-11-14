@@ -48,6 +48,18 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ data }) => {
     return avatarUrl;
   };
 
+  // Get level title based on user level
+  const getLevelTitle = () => {
+    if (level === 1) {
+      return 'The Journeyman';
+    } else if (level === 2) {
+      return 'The Knight';
+    } else if (level === 3) {
+      return 'The Queen';
+    }
+    return '';
+  };
+
   return (
     <div className="user-profile-card">
         <div className="avatar-section">
@@ -59,6 +71,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ data }) => {
             <span className="rank-badge">
                 {rank === 1 && <FaTrophy color="#FFD700" />} Rank {rank}
             </span>
+            <span className="level-title">{getLevelTitle()}</span>
         </div>
 
         <div className="profile-info">

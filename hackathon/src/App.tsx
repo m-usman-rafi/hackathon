@@ -48,7 +48,7 @@ function App() {
   return (
     <div className="gamification-dashboard">
       <div className="dashboard-header">
-        <h1>Your BN Journey</h1>
+        <h1>The News Journey</h1>
         <UserSearch onSearch={handleUserSearch} currentUserId={currentUserId} />
       </div>
       
@@ -67,6 +67,7 @@ function App() {
         <>
           {/* Existing components */}
           <UserProfileCard data={userData} /> 
+          <h2 className="achievements-header">Achievements</h2>
           <div className="streak-achievements-wrapper">
             <StreakCounter currentStreak={userData.currentStreak} /> 
             <Achievements 
